@@ -1,3 +1,4 @@
+
 import { useEffect, useState, useRef } from "react";
 import photo1 from "./assets/photo2583181825893420029.jpeg";
 import photo2 from "./assets/photo3400482280174130022.jpeg";
@@ -21,7 +22,6 @@ const FOTO_CATS_EN = ["Corporate Events","Government","Studio Portraits","Outdoo
 const VIDEO_CATS_ES = ["Eventos Corporativos","Marcas","Cumpleaños","Quinceañeras","Constructoras e Inmobiliaria"] as const;
 const VIDEO_CATS_EN = ["Corporate Events","Brands","Birthdays","Quinceañeras","Construction & Real Estate"] as const;
 
-// Mapping for portfolio keys (use ES keys internally)
 const portfolioFoto: Record<string, string[]> = {
   "Eventos Corporativos": [],
   "Gubernamentales": [],
@@ -33,193 +33,106 @@ const portfolioFoto: Record<string, string[]> = {
   "Constructoras e Inmobiliaria": [],
 };
 
-type VideoItem = { id: string; url: string; link: string; title: string };
+type VideoItem = { id: string; url: string; link: string; title: string; orient: "vertical" | "horizontal" };
 const portfolioVideo: Record<string, VideoItem[]> = {
   "Eventos Corporativos": [
-    { id: "1234749618", url: "https://player.vimeo.com/video/1234749618?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234749618", title: "Eventos Corporativos 1" },
-    { id: "1231465596", url: "https://player.vimeo.com/video/1231465596?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465596", title: "Eventos Corporativos 2" },
-    { id: "1234748814", url: "https://player.vimeo.com/video/1234748814?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748814", title: "Eventos Corporativos 3" },
-    { id: "1234750165", url: "https://player.vimeo.com/video/1234750165?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234750165", title: "Eventos Corporativos 4" },
-    { id: "1234748817", url: "https://player.vimeo.com/video/1234748817?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748817", title: "Eventos Corporativos 5" },
+    { id: "1234749618", url: "https://player.vimeo.com/video/1234749618?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234749618", title: "Eventos Corporativos 1", orient: "horizontal" },
+    { id: "1231465596", url: "https://player.vimeo.com/video/1231465596?title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465596", title: "Eventos Corporativos 2", orient: "horizontal" },
+    { id: "1234748814", url: "https://player.vimeo.com/video/1234748814?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748814", title: "Eventos Corporativos 3", orient: "horizontal" },
+    { id: "1234750165", url: "https://player.vimeo.com/video/1234750165?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234750165", title: "Eventos Corporativos 4", orient: "horizontal" },
+    { id: "1234748817", url: "https://player.vimeo.com/video/1234748817?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748817", title: "Eventos Corporativos 5", orient: "horizontal" },
   ],
   "Marcas": [
-    { id: "1234750043", url: "https://player.vimeo.com/video/1234750043?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234750043", title: "Marcas 1" },
-    { id: "1234746452", url: "https://player.vimeo.com/video/1234746452?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234746452", title: "Marcas 2" },
-    { id: "1234748816", url: "https://player.vimeo.com/video/1234748816?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748816", title: "Marcas 3" },
-    { id: "1234746448", url: "https://player.vimeo.com/video/1234746448?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234746448", title: "Marcas 4" },
-    { id: "1234746449", url: "https://player.vimeo.com/video/1234746449?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234746449", title: "Marcas 5" },
+    { id: "1234750043", url: "https://player.vimeo.com/video/1234750043?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234750043", title: "Marcas 1", orient: "horizontal" },
+    { id: "1234746452", url: "https://player.vimeo.com/video/1234746452?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234746452", title: "Marcas 2", orient: "horizontal" },
+    { id: "1234748816", url: "https://player.vimeo.com/video/1234748816?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748816", title: "Marcas 3", orient: "horizontal" },
+    { id: "1234746448", url: "https://player.vimeo.com/video/1234746448?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234746448", title: "Marcas 4", orient: "horizontal" },
+    { id: "1234746449", url: "https://player.vimeo.com/video/1234746449?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234746449", title: "Marcas 5", orient: "horizontal" },
   ],
   "Cumpleaños": [
-    { id: "1231465829", url: "https://player.vimeo.com/video/1231465829?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465829", title: "Cumpleaños 1" },
+    { id: "1231465829", url: "https://player.vimeo.com/video/1231465829?title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465829", title: "Cumpleaños 1", orient: "vertical" },
   ],
   "Quinceañeras": [
-    { id: "1234750163", url: "https://player.vimeo.com/video/1234750163?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234750163", title: "Quinceañeras 1" },
-    { id: "1231465650", url: "https://player.vimeo.com/video/1231465650?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465650", title: "Quinceañeras 2" },
+    { id: "1234750163", url: "https://player.vimeo.com/video/1234750163?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234750163", title: "Quinceañeras 1", orient: "vertical" },
+    { id: "1231465650", url: "https://player.vimeo.com/video/1231465650?title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465650", title: "Quinceañeras 2", orient: "vertical" },
   ],
   "Constructoras e Inmobiliaria": [
-    { id: "1234748815", url: "https://player.vimeo.com/video/1234748815?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748815", title: "Constructoras 1" },
-    { id: "1231465649", url: "https://player.vimeo.com/video/1231465649?autoplay=0&title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465649", title: "Constructoras 2" },
+    { id: "1234748815", url: "https://player.vimeo.com/video/1234748815?title=0&byline=0&portrait=0", link: "https://vimeo.com/1234748815", title: "Constructoras 1", orient: "horizontal" },
+    { id: "1231465649", url: "https://player.vimeo.com/video/1231465649?title=0&byline=0&portrait=0", link: "https://vimeo.com/1231465649", title: "Constructoras 2", orient: "horizontal" },
   ],
 };
 
 const dict = {
   ES: {
-    nav_inicio: "INICIO",
-    nav_portafolio: "PORTAFOLIO",
-    nav_sobre: "SOBRE NOSOTROS",
-    nav_servicios: "SERVICIOS",
-    nav_resenas: "RESEÑAS",
-    nav_cotizar: "COTIZAR",
-    hero_title1: "Creamos Historias",
-    hero_title2: "Que Venden",
-    hero_desc: "Más de 9 años capturando momentos que se convierten en recuerdos eternos. Fotografía y video de alto impacto para marcas y familias en RD.",
-    hero_btn_portafolio: "Ver Portafolio por Categoría",
-    hero_btn_cotizar: "Cotizar Ahora",
-    hero_audio_on: "Activar audio",
-    hero_audio_off: "Silenciar",
-    portfolio_label: "PORTAFOLIO POR CATEGORÍAS",
-    portfolio_title1: "Explora por",
-    portfolio_title2: "categoría",
-    portfolio_desc: "Fotografía solo en Retratos Estudio, Exterior y Bodas próximamente. Videos solo video con links visibles.",
-    tab_foto: "FOTOGRAFÍA",
-    tab_video: "VIDEO",
-    fotos: "fotos",
-    videos: "videos",
-    solo_video: "Solo video, sin fotos",
-    links_visibles: "Links visibles",
-    sin_portada: "Sin foto de portada",
-    btn_cotizar: "Cotizar",
-    btn_cotizar_whatsapp: "Cotizar • WhatsApp",
-    btn_cotizar_cat: "COTIZAR ESTA CATEGORÍA",
-    btn_whatsapp: "WhatsApp",
-    empty_fotos: "Fotos de",
-    empty_msg: "próximamente. Esperando que me pases las fotografías.",
-    sobre_label: "SOBRE NOSOTROS",
-    sobre_title1: "Más que una productora,",
-    sobre_title2: "somos narradores de emociones.",
+    nav_inicio: "INICIO", nav_portafolio: "PORTAFOLIO", nav_sobre: "SOBRE NOSOTROS", nav_servicios: "SERVICIOS", nav_resenas: "RESEÑAS", nav_cotizar: "COTIZAR",
+    hero_title1: "Creamos Historias", hero_title2: "Que Venden", hero_desc: "Más de 9 años capturando momentos que se convierten en recuerdos eternos. Fotografía y video de alto impacto para marcas y familias en RD.",
+    hero_btn_portafolio: "Ver Portafolio por Categoría", hero_btn_cotizar: "Cotizar Ahora", hero_audio_on: "Activar audio", hero_audio_off: "Silenciar",
+    portfolio_label: "PORTAFOLIO POR CATEGORÍAS", portfolio_title1: "Explora por", portfolio_title2: "categoría", portfolio_desc: "Fotografía solo en Retratos Estudio, Exterior y Bodas próximamente. Videos se ajustan a vertical/horizontal automáticamente.",
+    tab_foto: "FOTOGRAFÍA", tab_video: "VIDEO", fotos: "fotos", videos: "videos", solo_video: "Se adapta a vertical/horizontal", links_visibles: "Links visibles",
+    btn_cotizar: "COTIZAR", btn_cotizar_whatsapp: "Cotizar • WhatsApp", btn_cotizar_cat: "COTIZAR ESTA CATEGORÍA", btn_whatsapp: "WhatsApp",
+    empty_fotos: "Fotos de", empty_msg: "próximamente. Esperando que me pases las fotografías.",
+    sobre_label: "SOBRE NOSOTROS", sobre_title1: "Más que una productora,", sobre_title2: "somos narradores de emociones.",
     sobre_p1: "Soy Andy Batista Sanon, C.E.O. y fundador de Kender Media Group.",
     sobre_p2: "Creo que una fotografía no es simplemente una imagen, y un video no es simplemente una grabación. Son momentos que se convierten en recuerdos, emociones que vuelven a sentirse y experiencias que permanecen.",
     sobre_p3: "En Kender Media Group no nos dedicamos únicamente a capturar lo que sucede frente a nuestro lente; contamos historias, creamos emociones y transformamos momentos en recuerdos que podrás revivir una y otra vez.",
     sobre_p4: "Porque los momentos pasan... pero la emoción de volver a vivirlos no tiene por qué hacerlo.",
-    ceo_name: "Andy Batista Sanon",
-    ceo_role: "CEO & FOUNDER • KENDER MEDIA GROUP",
-    years: "+9 años",
-    years_sub: "CREANDO RECUERDOS",
+    ceo_name: "Andy Batista Sanon", ceo_role: "CEO & FOUNDER • KENDER MEDIA GROUP", years: "+9 años", years_sub: "CREANDO RECUERDOS",
     servicios_label: "SERVICIOS",
     servicios: [
-      { cat: "CONSTRUCTORAS", title: "CONSTRUCTORAS", desc: "Documentación de avances, renders vividos y contenido para ventas. Convertimos obra gris en deseo de compra." },
-      { cat: "CUMPLEAÑOS", title: "CUMPLEAÑOS", desc: "Celebraciones íntimas y grandes fiestas. Captura emotiva, entrega rápida, misma noche highlights." },
-      { cat: "QUINCEAÑOS", title: "QUINCEAÑOS", desc: "Sesión soñada, vestido, vals y emoción familiar. Fotos editoriales y film cinematográfico." },
-      { cat: "CORPORATIVOS", title: "CORPORATIVOS", desc: "Cobertura completa de eventos empresariales, congresos y activaciones de marca con entrega en 24h." },
-      { cat: "MARCAS", title: "MARCAS", desc: "Contenido de alto impacto para redes, campañas y e-commerce. Historias que venden." },
-      { cat: "GUBERNAMENTALES", title: "GUBERNAMENTALES", desc: "Cobertura oficial de actos, protocolo y comunicación institucional con calidad broadcast." },
+      { cat: "CONSTRUCTORAS", title: "CONSTRUCTORAS", desc: "Documentación de avances, renders vividos y contenido para ventas." },
+      { cat: "CUMPLEAÑOS", title: "CUMPLEAÑOS", desc: "Celebraciones íntimas y grandes fiestas. Captura emotiva." },
+      { cat: "QUINCEAÑOS", title: "QUINCEAÑOS", desc: "Sesión soñada, vestido, vals y emoción familiar." },
+      { cat: "CORPORATIVOS", title: "CORPORATIVOS", desc: "Cobertura completa de eventos empresariales con entrega en 24h." },
+      { cat: "MARCAS", title: "MARCAS", desc: "Contenido de alto impacto para redes y e-commerce." },
+      { cat: "GUBERNAMENTALES", title: "GUBERNAMENTALES", desc: "Cobertura oficial con calidad broadcast." },
     ],
     resenas_label: "LO QUE DICEN NUESTROS CLIENTES",
     resenas: [
-      { name: "Raul", text: "Profesionales de verdad. El video de mi empresa superó lo que imaginaba. Ventas aumentaron después del reel." },
-      { name: "Railing", text: "Mi quinceaños fue mágico y ellos lo hicieron eterno. Las fotos parecen de revista." },
-      { name: "Jesus", text: "Puntualidad, creatividad y calidad. Kender es otro nivel en RD." },
-      { name: "Roberto", text: "Contratamos para constructoras y ahora son nuestro equipo oficial de contenido." },
-      { name: "Laura", text: "La sesión de estudio superó mis expectativas. Atención al detalle increíble." },
+      { name: "Raul", text: "Profesionales de verdad. El video superó lo que imaginaba." },
+      { name: "Railing", text: "Mi quinceaños fue mágico y ellos lo hicieron eterno." },
+      { name: "Jesus", text: "Puntualidad, creatividad y calidad. Otro nivel." },
+      { name: "Roberto", text: "Contratamos para constructoras y ahora son nuestro equipo oficial." },
+      { name: "Laura", text: "La sesión de estudio superó mis expectativas." },
     ],
-    cotiza_label: "COTIZACIÓN POR CATEGORÍA",
-    cotiza_title1: "COTIZA TU",
-    cotiza_title2: "CATEGORÍA",
-    cotiza_desc: "Selecciona fotografía o video y la categoría que viste. Respondemos en menos de 2 horas.",
-    cat_selected: "CATEGORÍA SELECCIONADA",
-    form_nombre: "Nombre completo",
-    form_whatsapp: "WhatsApp",
-    form_tipo: "Tipo de evento / Categoría",
-    form_fecha: "Fecha",
-    form_idea: "Cuéntanos tu idea para esta categoría",
-    form_selected_ph: "Categoría seleccionada aparecerá aquí",
-    form_submit: "Enviar cotización de",
-    form_submit2: "categoría • WhatsApp",
-    footer_desc: "Fotografía y video de alto impacto. Santo Domingo Este, RD. Historias que venden y emociones que permanecen.",
-    contacto: "CONTACTO",
-    accesos: "ACCESOS RÁPIDOS",
-    whatsapp_directo: "WhatsApp directo",
+    cotiza_label: "COTIZACIÓN POR CATEGORÍA", cotiza_title1: "COTIZA TU", cotiza_title2: "CATEGORÍA", cotiza_desc: "Selecciona fotografía o video y la categoría que viste.",
+    cat_selected: "CATEGORÍA SELECCIONADA", form_nombre: "Nombre completo", form_whatsapp: "WhatsApp", form_tipo: "Tipo de evento / Categoría", form_idea: "Cuéntanos tu idea", form_selected_ph: "Categoría seleccionada aparecerá aquí", form_submit: "Enviar cotización", footer_desc: "Fotografía y video de alto impacto. Santo Domingo Este, RD.", contacto: "CONTACTO", accesos: "ACCESOS RÁPIDOS", whatsapp_directo: "WhatsApp directo",
   },
   EN: {
-    nav_inicio: "HOME",
-    nav_portafolio: "PORTFOLIO",
-    nav_sobre: "ABOUT US",
-    nav_servicios: "SERVICES",
-    nav_resenas: "REVIEWS",
-    nav_cotizar: "QUOTE",
-    hero_title1: "We Create Stories",
-    hero_title2: "That Sell",
-    hero_desc: "Over 9 years capturing moments that become eternal memories. High-impact photography and video for brands and families in DR.",
-    hero_btn_portafolio: "View Portfolio by Category",
-    hero_btn_cotizar: "Get Quote Now",
-    hero_audio_on: "Enable audio",
-    hero_audio_off: "Mute",
-    portfolio_label: "PORTFOLIO BY CATEGORIES",
-    portfolio_title1: "Explore by",
-    portfolio_title2: "category",
-    portfolio_desc: "Photography only in Studio, Outdoor and Weddings coming soon. Videos only video with visible links.",
-    tab_foto: "PHOTOGRAPHY",
-    tab_video: "VIDEO",
-    fotos: "photos",
-    videos: "videos",
-    solo_video: "Only video, no photos",
-    links_visibles: "Visible links",
-    sin_portada: "No cover photo",
-    btn_cotizar: "QUOTE",
-    btn_cotizar_whatsapp: "Quote • WhatsApp",
-    btn_whatsapp: "WhatsApp",
-    btn_cotizar_cat: "QUOTE THIS CATEGORY",
-    empty_fotos: "Photos of",
-    empty_msg: "coming soon. Waiting for you to send the photos.",
-    sobre_label: "ABOUT US",
-    sobre_title1: "More than a production company,",
-    sobre_title2: "we are storytellers of emotions.",
+    nav_inicio: "HOME", nav_portafolio: "PORTFOLIO", nav_sobre: "ABOUT US", nav_servicios: "SERVICES", nav_resenas: "REVIEWS", nav_cotizar: "QUOTE",
+    hero_title1: "We Create Stories", hero_title2: "That Sell", hero_desc: "Over 9 years capturing moments that become eternal memories. High-impact photography and video for brands and families in DR.",
+    hero_btn_portafolio: "View Portfolio by Category", hero_btn_cotizar: "Get Quote Now", hero_audio_on: "Enable audio", hero_audio_off: "Mute",
+    portfolio_label: "PORTFOLIO BY CATEGORIES", portfolio_title1: "Explore by", portfolio_title2: "category", portfolio_desc: "Photography only in Studio, Outdoor and Weddings coming soon. Videos auto-adjust to vertical/horizontal.",
+    tab_foto: "PHOTOGRAPHY", tab_video: "VIDEO", fotos: "photos", videos: "videos", solo_video: "Auto vertical/horizontal", links_visibles: "Visible links",
+    btn_cotizar: "QUOTE", btn_cotizar_whatsapp: "Quote • WhatsApp", btn_cotizar_cat: "QUOTE THIS CATEGORY", btn_whatsapp: "WhatsApp",
+    empty_fotos: "Photos of", empty_msg: "coming soon. Waiting for photos.",
+    sobre_label: "ABOUT US", sobre_title1: "More than a production company,", sobre_title2: "we are storytellers of emotions.",
     sobre_p1: "I'm Andy Batista Sanon, CEO and founder of Kender Media Group.",
-    sobre_p2: "I believe a photograph is not just an image, and a video is not just a recording. They are moments that become memories, emotions that are felt again and experiences that remain.",
-    sobre_p3: "At Kender Media Group we don't just capture what happens in front of our lens; we tell stories, create emotions and transform moments into memories you can relive over and over.",
+    sobre_p2: "I believe a photograph is not just an image, and a video is not just a recording. They are moments that become memories.",
+    sobre_p3: "At Kender Media Group we don't just capture what happens in front of our lens; we tell stories and transform moments into memories.",
     sobre_p4: "Because moments pass... but the emotion of reliving them doesn't have to.",
-    ceo_name: "Andy Batista Sanon",
-    ceo_role: "CEO & FOUNDER • KENDER MEDIA GROUP",
-    years: "+9 years",
-    years_sub: "CREATING MEMORIES",
+    ceo_name: "Andy Batista Sanon", ceo_role: "CEO & FOUNDER", years: "+9 years", years_sub: "CREATING MEMORIES",
     servicios_label: "SERVICES",
     servicios: [
-      { cat: "CONSTRUCTION", title: "CONSTRUCTION", desc: "Progress documentation, vivid renders and sales content. We turn gray work into purchase desire." },
-      { cat: "BIRTHDAYS", title: "BIRTHDAYS", desc: "Intimate celebrations and big parties. Emotional capture, fast delivery, same night highlights." },
-      { cat: "QUINCEAÑERAS", title: "QUINCEAÑERAS", desc: "Dream session, dress, waltz and family emotion. Editorial photos and cinematic film." },
-      { cat: "CORPORATE", title: "CORPORATE", desc: "Full coverage of corporate events, congresses and brand activations with 24h delivery." },
-      { cat: "BRANDS", title: "BRANDS", desc: "High-impact content for social, campaigns and e-commerce. Stories that sell." },
-      { cat: "GOVERNMENT", title: "GOVERNMENT", desc: "Official coverage of acts, protocol and institutional communication with broadcast quality." },
+      { cat: "CONSTRUCTION", title: "CONSTRUCTION", desc: "Progress documentation and sales content." },
+      { cat: "BIRTHDAYS", title: "BIRTHDAYS", desc: "Intimate celebrations and big parties." },
+      { cat: "QUINCEAÑERAS", title: "QUINCEAÑERAS", desc: "Dream session, dress, waltz and family emotion." },
+      { cat: "CORPORATE", title: "CORPORATE", desc: "Full coverage of corporate events." },
+      { cat: "BRANDS", title: "BRANDS", desc: "High-impact content for social and e-commerce." },
+      { cat: "GOVERNMENT", title: "GOVERNMENT", desc: "Official coverage with broadcast quality." },
     ],
     resenas_label: "WHAT OUR CLIENTS SAY",
     resenas: [
-      { name: "Raul", text: "True professionals. My company's video exceeded what I imagined. Sales increased after the reel." },
-      { name: "Railing", text: "My quinceañera was magical and they made it eternal. Photos look like magazine." },
-      { name: "Jesus", text: "Punctuality, creativity and quality. Kender is next level in DR." },
-      { name: "Roberto", text: "We hired for construction and now they are our official content team." },
-      { name: "Laura", text: "The studio session exceeded my expectations. Incredible attention to detail." },
+      { name: "Raul", text: "True professionals. Video exceeded expectations." },
+      { name: "Railing", text: "My quinceañera was magical and they made it eternal." },
+      { name: "Jesus", text: "Punctuality, creativity and quality." },
+      { name: "Roberto", text: "We hired for construction and now they are our official team." },
+      { name: "Laura", text: "Studio session exceeded my expectations." },
     ],
-    cotiza_label: "QUOTE BY CATEGORY",
-    cotiza_title1: "QUOTE YOUR",
-    cotiza_title2: "CATEGORY",
-    cotiza_desc: "Select photography or video and the category you saw. We respond in less than 2 hours.",
-    cat_selected: "SELECTED CATEGORY",
-    form_nombre: "Full name",
-    form_whatsapp: "WhatsApp",
-    form_tipo: "Event type / Category",
-    form_fecha: "Date",
-    form_idea: "Tell us your idea for this category",
-    form_selected_ph: "Selected category will appear here",
-    form_submit: "Send quote for",
-    form_submit2: "category • WhatsApp",
-    footer_desc: "High-impact photography and video. Santo Domingo Este, DR. Stories that sell and emotions that remain.",
-    contacto: "CONTACT",
-    accesos: "QUICK LINKS",
-    whatsapp_directo: "Direct WhatsApp",
+    cotiza_label: "QUOTE BY CATEGORY", cotiza_title1: "QUOTE YOUR", cotiza_title2: "CATEGORY", cotiza_desc: "Select photography or video and the category you saw.",
+    cat_selected: "SELECTED CATEGORY", form_nombre: "Full name", form_whatsapp: "WhatsApp", form_tipo: "Event type / Category", form_idea: "Tell us your idea", form_selected_ph: "Selected category will appear here", form_submit: "Send quote", footer_desc: "High-impact photography and video. Santo Domingo Este, DR.", contacto: "CONTACT", accesos: "QUICK LINKS", whatsapp_directo: "Direct WhatsApp",
   }
 };
 
-// HERO con autoplay continuo - background=1 y loop
 const heroSlides = [
   { type: "video", url: "https://player.vimeo.com/video/1234749618?background=1&autoplay=1&muted=1&loop=1&controls=0&title=0&byline=0&portrait=0", catES: "EVENTOS CORPORATIVOS", catEN: "CORPORATE EVENTS" },
   { type: "photo", src: photo6, catES: "RETRATOS DE EXTERIOR", catEN: "OUTDOOR PORTRAITS" },
@@ -242,24 +155,8 @@ export default function App() {
   const [lang, setLang] = useState<Lang>("ES");
   const iframeRefs = useRef<(HTMLIFrameElement | null)[]>([]);
   const t = dict[lang];
-
   const fotoCats = lang==="ES" ? FOTO_CATS_ES : FOTO_CATS_EN;
   const videoCats = lang==="ES" ? VIDEO_CATS_ES : VIDEO_CATS_EN;
-
-  // Map display cat to internal ES key for data lookup
-  const getFotoKey = (displayCat: string) => {
-    if (lang==="ES") return displayCat;
-    const idx = FOTO_CATS_EN.indexOf(displayCat as any);
-    return FOTO_CATS_ES[idx] || displayCat;
-  };
-  const getVideoKey = (displayCat: string) => {
-    if (lang==="ES") return displayCat;
-    const idx = VIDEO_CATS_EN.indexOf(displayCat as any);
-    return VIDEO_CATS_ES[idx] || displayCat;
-  };
-
-  const activeFotoKey = getFotoKey(lang==="ES" ? activeFotoCatES : FOTO_CATS_ES[FOTO_CATS_EN.indexOf(activeFotoCatES as any)] || activeFotoCatES);
-  // Actually we store active as ES always for simplicity
   const activeFotoCatDisplay = lang==="ES" ? activeFotoCatES : FOTO_CATS_EN[FOTO_CATS_ES.indexOf(activeFotoCatES as any)] || activeFotoCatES;
   const activeVideoCatDisplay = lang==="ES" ? activeVideoCatES : VIDEO_CATS_EN[VIDEO_CATS_ES.indexOf(activeVideoCatES as any)] || activeVideoCatES;
 
@@ -272,55 +169,27 @@ export default function App() {
     const iframe = iframeRefs.current[current];
     if (!iframe) return;
     try {
-      if (muted) {
-        iframe.contentWindow?.postMessage(JSON.stringify({ method: "setVolume", value: 1 }), "*");
-      } else {
-        iframe.contentWindow?.postMessage(JSON.stringify({ method: "setVolume", value: 0 }), "*");
-      }
+      iframe.contentWindow?.postMessage(JSON.stringify({ method: "setVolume", value: muted?1:0 }), "*");
       setMuted(!muted);
     } catch {}
   };
 
-  const cotizarCategoria = (categoriaDisplay: string, tipo: string) => {
-    const catForMsg = `${tipo.toUpperCase()} - ${categoriaDisplay}`;
-    setFormData({ ...formData, categoria: catForMsg, tipo: categoriaDisplay });
+  const cotizarCategoria = (cat: string, tipo: string) => {
+    setFormData({ ...formData, categoria: `${tipo.toUpperCase()} - ${cat}`, tipo: cat });
     document.getElementById("cotizacion")?.scrollIntoView({ behavior: "smooth" });
-  };
-
-  const handleLangChange = (newLang: Lang) => {
-    setLang(newLang);
-    // Reset active cats to first of that language but keep ES internal for data
-    if (newLang==="ES") {
-      // keep current ES keys
-    } else {
-      // keep ES keys, display will translate automatically
-    }
   };
 
   return (
     <div className="min-h-screen bg-[#070707] text-white">
-      <style>{`@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');*{font-family:'Inter',sans-serif}.serif{font-family:'Instrument Serif',serif}html{scroll-behavior:smooth; scroll-padding-top:96px;}.bronze-gradient{background: linear-gradient(90deg,#C08A5C,#B7794B);}.text-bronze{color:#C08A5C;}.hero-media{position:absolute; inset:0; width:100%; height:100%; overflow:hidden; background:#070707;}.hero-media iframe{position:absolute; left:50%; top:50%; width:100vw; height:56.25vw; min-height:100%; min-width:177.77vh; transform:translate(-50%,-50%) scale(1.2); border:0; pointer-events:none;}.hero-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;}@media (max-width:767px){ .hero-media img{object-position:center top;} }@media (min-width:768px){ .hero-media img{object-position:center 18%; transform:scale(0.92); transform-origin:center top; width:100%; height:108%;} }`}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');*{font-family:'Inter',sans-serif}.serif{font-family:'Instrument Serif',serif}html{scroll-behavior:smooth; scroll-padding-top:96px;}.bronze-gradient{background: linear-gradient(90deg,#C08A5C,#B7794B);}.text-bronze{color:#C08A5C;}.hero-media{position:absolute; inset:0; width:100%; height:100%; overflow:hidden; background:#070707;}.hero-media iframe{position:absolute; left:50%; top:50%; width:100vw; height:56.25vw; min-height:100%; min-width:177.77vh; transform:translate(-50%,-50%) scale(1.2); border:0; pointer-events:none;}.hero-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;}`}</style>
 
       <header className="fixed top-0 left-0 w-full z-50 bg-[#070707]/90 backdrop-blur-xl border-b border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto px-6 md:px-10 h-[88px] flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <img src={logo} alt="Kender" className="w-12 h-12 object-cover rounded-[8px]" />
-            <div className="leading-[1.1]"><p className="font-semibold tracking-[0.12em] text-[12px]">KENDER</p><p className="text-[10px] tracking-[0.2em] opacity-70">MEDIA GROUP</p></div>
-          </div>
+          <div className="flex items-center gap-3"><img src={logo} alt="Kender" className="w-12 h-12 object-cover rounded-[8px]" /><div><p className="font-semibold text-[12px]">KENDER</p><p className="text-[10px] opacity-70">MEDIA GROUP</p></div></div>
           <div className="flex items-center gap-4">
-            <nav className="hidden lg:flex gap-6 text-[11px] tracking-widest opacity-70">
-              <a href="#inicio">{t.nav_inicio}</a>
-              <a href="#portafolio">{t.nav_portafolio}</a>
-              <a href="#sobre">{t.nav_sobre}</a>
-              <a href="#servicios">{t.nav_servicios}</a>
-              <a href="#resenas">{t.nav_resenas}</a>
-              <a href="#cotizacion">{t.nav_cotizar}</a>
-            </nav>
-            <div className="flex p-1 rounded-full bg-white/[0.08] border border-white/10">
-              <button onClick={()=>handleLangChange("ES")} className={`px-3 py-1 rounded-full text-[11px] font-bold transition ${lang==="ES"?"bg-white text-black":"opacity-60 hover:opacity-100"}`}>ES</button>
-              <button onClick={()=>handleLangChange("EN")} className={`px-3 py-1 rounded-full text-[11px] font-bold transition ${lang==="EN"?"bg-white text-black":"opacity-60 hover:opacity-100"}`}>EN</button>
-            </div>
-            <a href="#cotizacion" className="bronze-gradient text-black text-[11px] tracking-widest px-5 py-2.5 rounded-full font-semibold">{t.nav_cotizar}</a>
+            <nav className="hidden lg:flex gap-6 text-[11px] opacity-70"><a href="#inicio">{t.nav_inicio}</a><a href="#portafolio">{t.nav_portafolio}</a><a href="#sobre">{t.nav_sobre}</a><a href="#servicios">{t.nav_servicios}</a><a href="#resenas">{t.nav_resenas}</a><a href="#cotizacion">{t.nav_cotizar}</a></nav>
+            <div className="flex p-1 rounded-full bg-white/[0.08] border border-white/10"><button onClick={()=>setLang("ES")} className={`px-3 py-1 rounded-full text-[11px] font-bold ${lang==="ES"?"bg-white text-black":"opacity-60"}`}>ES</button><button onClick={()=>setLang("EN")} className={`px-3 py-1 rounded-full text-[11px] font-bold ${lang==="EN"?"bg-white text-black":"opacity-60"}`}>EN</button></div>
+            <a href="#cotizacion" className="bronze-gradient text-black text-[11px] px-5 py-2.5 rounded-full font-semibold">{t.nav_cotizar}</a>
           </div>
         </div>
       </header>
@@ -330,255 +199,65 @@ export default function App() {
           const isActive = idx === current;
           return (
             <div key={idx} className={`hero-media transition-opacity duration-[1200ms] ${isActive?"opacity-100 z-[1]":"opacity-0 z-0"}`}>
-              {slide.type==="video"?<iframe ref={el=>{iframeRefs.current[idx]=el}} src={(slide as any).url} allow="autoplay; fullscreen" title={`v-${idx}`} />:<img src={(slide as any).src} alt={(lang==="ES"?slide.catES:slide.catEN)} />}
+              {slide.type==="video"?<iframe ref={el=>{iframeRefs.current[idx]=el}} src={(slide as any).url} allow="autoplay; fullscreen" title={`v-${idx}`} />:<img src={(slide as any).src} alt={lang==="ES"?slide.catES:slide.catEN} />}
               <div className="absolute inset-0 bg-black/50" />
               <div className="absolute inset-0 bg-gradient-to-t from-[#070707]/90 via-transparent to-[#070707]/20" />
             </div>
           );
         })}
-        <div className="absolute top-[108px] left-6 md:left-10 z-20 flex items-center gap-3">
-          <div className="w-9 h-9 rounded-full bg-white/10 backdrop-blur border border-white/20 flex items-center justify-center text-[12px]">▶</div>
-          <div className="text-[11px] tracking-[0.2em] uppercase opacity-80 border border-white/15 px-3 py-1 rounded-full bg-black/20 backdrop-blur">{lang==="ES"?heroSlides[current].catES:heroSlides[current].catEN} • {String(current+1).padStart(2,"0")}/08</div>
-        </div>
-        {heroSlides[current].type==="video" && (
-          <button onClick={toggleAudio} className="absolute top-[108px] right-6 md:right-10 z-20 text-[11px] tracking-widest uppercase px-4 py-2 rounded-full bg-white/10 backdrop-blur border border-white/20">{muted?t.hero_audio_on:t.hero_audio_off}</button>
-        )}
-        <div className="absolute inset-0 z-20 flex items-center justify-center px-6">
-          <div className="max-w-[900px] w-full text-center mt-16">
-            <h1 className="serif text-[46px] md:text-[84px] leading-[0.9] tracking-[-0.02em]"><span className="block font-light italic opacity-90">{t.hero_title1}</span><span className="block font-normal text-bronze">{t.hero_title2}</span></h1>
-            <p className="mt-6 text-[14px] md:text-[16px] leading-[1.7] opacity-75 max-w-[640px] mx-auto font-light">{t.hero_desc}</p>
-            <div className="mt-10 flex flex-wrap justify-center gap-3">
-              <a href="#portafolio" className="px-8 py-3.5 rounded-full bg-white text-black text-[12px] tracking-[0.14em] uppercase font-semibold">{t.hero_btn_portafolio}</a>
-              <a href="#cotizacion" className="px-8 py-3.5 rounded-full bronze-gradient text-black text-[12px] tracking-[0.14em] uppercase font-semibold">{t.hero_btn_cotizar}</a>
-            </div>
-          </div>
-        </div>
+        <div className="absolute top-[108px] left-6 md:left-10 z-20 flex items-center gap-3"><div className="w-9 h-9 rounded-full bg-white/10 border border-white/20 flex items-center justify-center">▶</div><div className="text-[11px] border border-white/15 px-3 py-1 rounded-full bg-black/20">{lang==="ES"?heroSlides[current].catES:heroSlides[current].catEN} • {String(current+1).padStart(2,"0")}/08</div></div>
+        {heroSlides[current].type==="video" && <button onClick={toggleAudio} className="absolute top-[108px] right-6 md:right-10 z-20 text-[11px] px-4 py-2 rounded-full bg-white/10 border border-white/20">{muted?t.hero_audio_on:t.hero_audio_off}</button>}
+        <div className="absolute inset-0 z-20 flex items-center justify-center px-6"><div className="max-w-[900px] w-full text-center mt-16"><h1 className="serif text-[46px] md:text-[84px] leading-[0.9]"><span className="block italic opacity-90">{t.hero_title1}</span><span className="block text-bronze">{t.hero_title2}</span></h1><p className="mt-6 text-[14px] md:text-[16px] opacity-75 max-w-[640px] mx-auto">{t.hero_desc}</p><div className="mt-10 flex justify-center gap-3"><a href="#portafolio" className="px-8 py-3.5 rounded-full bg-white text-black text-[12px] font-semibold uppercase">{t.hero_btn_portafolio}</a><a href="#cotizacion" className="px-8 py-3.5 rounded-full bronze-gradient text-black text-[12px] font-semibold uppercase">{t.hero_btn_cotizar}</a></div></div></div>
       </section>
 
       <section id="portafolio" className="bg-[#090909] py-20 border-t border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-          <div className="flex flex-wrap items-end justify-between gap-6">
-            <div>
-              <p className="text-[11px] tracking-[0.22em] text-bronze">{t.portfolio_label}</p>
-              <h2 className="serif text-[36px] md:text-[54px] leading-[0.95] mt-3">{t.portfolio_title1} <span className="text-bronze italic">{t.portfolio_title2}</span></h2>
-              <p className="mt-3 text-[13px] opacity-60 max-w-[520px]">{t.portfolio_desc}</p>
-            </div>
-            <div className="flex gap-2 p-1 rounded-full bg-white/[0.06] border border-white/10">
-              <button onClick={()=>setMainTab("foto")} className={`px-7 py-2.5 rounded-full text-[12px] tracking-widest font-semibold ${mainTab==="foto"?"bg-white text-black":"opacity-60"}`}>{t.tab_foto}</button>
-              <button onClick={()=>setMainTab("video")} className={`px-7 py-2.5 rounded-full text-[12px] tracking-widest font-semibold ${mainTab==="video"?"bg-white text-black":"opacity-60"}`}>{t.tab_video}</button>
-            </div>
-          </div>
+          <div className="flex flex-wrap items-end justify-between gap-6"><div><p className="text-[11px] text-bronze">{t.portfolio_label}</p><h2 className="serif text-[36px] md:text-[54px] mt-3">{t.portfolio_title1} <span className="text-bronze italic">{t.portfolio_title2}</span></h2><p className="mt-3 text-[13px] opacity-60 max-w-[520px]">{t.portfolio_desc}</p></div><div className="flex gap-2 p-1 rounded-full bg-white/[0.06] border border-white/10"><button onClick={()=>setMainTab("foto")} className={`px-7 py-2.5 rounded-full text-[12px] font-semibold ${mainTab==="foto"?"bg-white text-black":"opacity-60"}`}>{t.tab_foto}</button><button onClick={()=>setMainTab("video")} className={`px-7 py-2.5 rounded-full text-[12px] font-semibold ${mainTab==="video"?"bg-white text-black":"opacity-60"}`}>{t.tab_video}</button></div></div>
 
           {mainTab==="foto" && (
             <>
-              <div className="mt-8 flex flex-wrap gap-2">
-                {fotoCats.map((cat, idx)=>{
-                  const esKey = FOTO_CATS_ES[idx];
-                  const count = portfolioFoto[esKey]?.length || 0;
-                  const isActive = activeFotoCatES===esKey;
-                  return <button key={cat} onClick={()=>setActiveFotoCatES(esKey)} className={`px-4 py-2 rounded-full text-[11px] border ${isActive?"bg-[#C08A5C] border-[#C08A5C] text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>{cat} {count>0?`(${count})`:""}</button>
-                })}
-              </div>
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4 p-4 rounded-[14px] bg-white/[0.04] border border-white/10">
-                <div><p className="font-semibold text-[13px]">{activeFotoCatDisplay}</p><p className="text-[11px] opacity-60">{portfolioFoto[activeFotoCatES]?.length||0} {t.fotos}</p></div>
-                <button onClick={()=>cotizarCategoria(activeFotoCatDisplay,"foto")} className="px-6 py-2.5 rounded-full bronze-gradient text-black text-[11px] font-bold uppercase">{t.btn_cotizar} {activeFotoCatDisplay} • {t.btn_whatsapp}</button>
-              </div>
-              {(portfolioFoto[activeFotoCatES]?.length||0)>0 ? (
-                <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {(portfolioFoto[activeFotoCatES]||[]).map((src,i)=>(
-                    <div key={i} className="group relative aspect-[4/5] overflow-hidden rounded-[16px] bg-[#111] border border-white/5 cursor-pointer" onClick={()=>setLightbox(src)}>
-                      <img src={src} alt={`${activeFotoCatDisplay} ${i+1}`} className="w-full h-full object-cover object-top group-hover:scale-[1.04] transition duration-700" />
-                      <div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between items-end opacity-0 group-hover:opacity-100 transition bg-gradient-to-t from-black/60 to-transparent">
-                        <p className="text-[10px]">{activeFotoCatDisplay} • {i+1}</p>
-                        <button onClick={(e)=>{e.stopPropagation(); cotizarCategoria(activeFotoCatDisplay,"foto")}} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">{t.btn_cotizar}</button>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <div className="mt-8 rounded-[16px] border border-dashed border-white/15 p-12 text-center">
-                  <p className="text-[13px] opacity-60">{t.empty_fotos} {activeFotoCatDisplay} {t.empty_msg}</p>
-                  <button onClick={()=>cotizarCategoria(activeFotoCatDisplay,"foto")} className="mt-4 px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">{t.btn_cotizar} {activeFotoCatDisplay}</button>
-                </div>
-              )}
+              <div className="mt-8 flex flex-wrap gap-2">{fotoCats.map((cat, idx)=>{const esKey = FOTO_CATS_ES[idx]; const count = portfolioFoto[esKey]?.length||0; const isActive = activeFotoCatES===esKey; return <button key={cat} onClick={()=>setActiveFotoCatES(esKey)} className={`px-4 py-2 rounded-full text-[11px] border ${isActive?"bg-[#C08A5C] border-[#C08A5C] text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>{cat} {count>0?`(${count})`:""}</button>})}</div>
+              <div className="mt-8 flex justify-between gap-4 p-4 rounded-[14px] bg-white/[0.04] border border-white/10"><div><p className="font-semibold text-[13px]">{activeFotoCatDisplay}</p><p className="text-[11px] opacity-60">{portfolioFoto[activeFotoCatES]?.length||0} {t.fotos}</p></div><button onClick={()=>cotizarCategoria(activeFotoCatDisplay,"foto")} className="px-6 py-2.5 rounded-full bronze-gradient text-black text-[11px] font-bold uppercase">{t.btn_cotizar} {activeFotoCatDisplay}</button></div>
+              {(portfolioFoto[activeFotoCatES]?.length||0)>0 ? <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-3">{(portfolioFoto[activeFotoCatES]||[]).map((src,i)=><div key={i} className="group relative aspect-[4/5] overflow-hidden rounded-[16px] bg-[#111] border border-white/5 cursor-pointer" onClick={()=>setLightbox(src)}><img src={src} alt={activeFotoCatDisplay} className="w-full h-full object-cover object-top group-hover:scale-[1.04] transition" /><div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between opacity-0 group-hover:opacity-100 transition bg-gradient-to-t from-black/60 to-transparent"><p className="text-[10px]">{activeFotoCatDisplay} • {i+1}</p><button onClick={(e)=>{e.stopPropagation(); cotizarCategoria(activeFotoCatDisplay,"foto")}} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">{t.btn_cotizar}</button></div></div>)}</div> : <div className="mt-8 rounded-[16px] border border-dashed border-white/15 p-12 text-center"><p className="text-[13px] opacity-60">{t.empty_fotos} {activeFotoCatDisplay} {t.empty_msg}</p><button onClick={()=>cotizarCategoria(activeFotoCatDisplay,"foto")} className="mt-4 px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">{t.btn_cotizar} {activeFotoCatDisplay}</button></div>}
             </>
           )}
 
           {mainTab==="video" && (
             <>
-              <div className="mt-8 flex flex-wrap gap-2">
-                {videoCats.map((cat, idx)=>{
-                  const esKey = VIDEO_CATS_ES[idx];
-                  const count = portfolioVideo[esKey]?.length||0;
-                  const isActive = activeVideoCatES===esKey;
-                  return <button key={cat} onClick={()=>setActiveVideoCatES(esKey)} className={`px-4 py-2 rounded-full text-[11px] border ${isActive?"bg-white text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>{cat} ({count})</button>
-                })}
-              </div>
-              <div className="mt-8 flex flex-wrap items-center justify-between gap-4 p-4 rounded-[14px] bg-white/[0.04] border border-white/10">
-                <div><p className="font-semibold text-[13px]">{activeVideoCatDisplay}</p><p className="text-[11px] opacity-60">VIDEO • {portfolioVideo[activeVideoCatES]?.length} {t.videos} • {t.solo_video} • {t.links_visibles}</p></div>
-                <button onClick={()=>cotizarCategoria(activeVideoCatDisplay,"video")} className="px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">{t.btn_cotizar} {activeVideoCatDisplay}</button>
-              </div>
-              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(portfolioVideo[activeVideoCatES]||[]).map((v,i)=>(
-                  <div key={i} className="rounded-[16px] overflow-hidden bg-[#111] border border-white/10">
-                    <div className="relative aspect-video bg-black">
-                      <iframe src={v.url} className="w-full h-full" allow="autoplay; fullscreen" title={v.title} />
+              <div className="mt-8 flex flex-wrap gap-2">{videoCats.map((cat, idx)=>{const esKey = VIDEO_CATS_ES[idx]; const count = portfolioVideo[esKey]?.length||0; const isActive = activeVideoCatES===esKey; return <button key={cat} onClick={()=>setActiveVideoCatES(esKey)} className={`px-4 py-2 rounded-full text-[11px] border ${isActive?"bg-white text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>{cat} ({count})</button>})}</div>
+              <div className="mt-8 flex justify-between gap-4 p-4 rounded-[14px] bg-white/[0.04] border border-white/10"><div><p className="font-semibold text-[13px]">{activeVideoCatDisplay}</p><p className="text-[11px] opacity-60">VIDEO • {portfolioVideo[activeVideoCatES]?.length} {t.videos} • {t.solo_video}</p></div><button onClick={()=>cotizarCategoria(activeVideoCatDisplay,"video")} className="px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">{t.btn_cotizar} {activeVideoCatDisplay}</button></div>
+              <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
+                {(portfolioVideo[activeVideoCatES]||[]).map((v,i)=>{
+                  const isVertical = v.orient==="vertical";
+                  return (
+                  <div key={i} className={`rounded-[16px] overflow-hidden bg-[#111] border border-white/10 ${isVertical?"max-w-[360px] mx-auto w-full":""}`}>
+                    <div className={`relative bg-black overflow-hidden ${isVertical?"aspect-[9/16]":"aspect-video"}`}>
+                      <iframe src={v.url} className="w-full h-full absolute inset-0" allow="autoplay; fullscreen" title={v.title} />
                     </div>
                     <div className="p-3 bg-[#0E0E0E] flex flex-col gap-2">
                       <a href={v.link} target="_blank" className="text-[11px] text-[#C08A5C] underline break-all">{v.link}</a>
-                      <div className="flex justify-between items-center">
-                        <p className="text-[10px] opacity-60">{v.title}</p>
-                        <button onClick={()=>cotizarCategoria(activeVideoCatDisplay,"video")} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">{t.btn_cotizar_cat}</button>
-                      </div>
+                      <div className="flex justify-between items-center"><p className="text-[10px] opacity-60">{v.title} • {isVertical?"VERTICAL 9:16":"HORIZONTAL 16:9"}</p><button onClick={()=>cotizarCategoria(activeVideoCatDisplay,"video")} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">{t.btn_cotizar_cat}</button></div>
                     </div>
                   </div>
-                ))}
+                  )
+                })}
               </div>
             </>
           )}
         </div>
       </section>
 
-      <section id="sobre" className="bg-[#070707] py-20 border-t border-white/[0.06]">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-          <p className="text-[11px] tracking-[0.22em] text-bronze">{t.sobre_label}</p>
-          <div className="mt-6 grid md:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
-            <div>
-              <h2 className="serif text-[38px] md:text-[52px] leading-[0.95]">{t.sobre_title1}<br/><span className="text-bronze italic">{t.sobre_title2}</span></h2>
-              <div className="mt-8 space-y-4 text-[15px] leading-[1.8] opacity-75 font-light">
-                <p>{t.sobre_p1}</p>
-                <p>{t.sobre_p2}</p>
-                <p>{t.sobre_p3}</p>
-                <p>{t.sobre_p4}</p>
-              </div>
-              <div className="mt-10 flex items-center gap-4">
-                <div className="w-12 h-[1px] bg-[#C08A5C]"></div>
-                <div>
-                  <p className="font-semibold text-[16px]">{t.ceo_name}</p>
-                  <p className="text-[11px] tracking-[0.2em] opacity-60">{t.ceo_role}</p>
-                </div>
-              </div>
-            </div>
-            <div className="relative">
-              <div className="relative rounded-[24px] overflow-hidden bg-[#111] border border-white/10 aspect-[4/5]">
-                <img src={photo3} alt="CEO" className="w-full h-full object-cover object-top" />
-                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
-              </div>
-              <div className="absolute -bottom-6 -left-6 md:bottom-6 md:-left-10 bg-[#0E0E0E] border border-white/10 rounded-[16px] p-5 md:p-6 shadow-2xl">
-                <p className="serif text-[28px] leading-none">{t.years}</p>
-                <p className="mt-1 text-[10px] tracking-[0.22em] opacity-60">{t.years_sub}</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      <section id="sobre" className="bg-[#070707] py-20 border-t border-white/[0.06]"><div className="max-w-[1280px] mx-auto px-6 md:px-10"><p className="text-[11px] text-bronze">{t.sobre_label}</p><div className="mt-6 grid md:grid-cols-[1.1fr_0.9fr] gap-10"><div><h2 className="serif text-[38px] md:text-[52px] leading-[0.95]">{t.sobre_title1}<br/><span className="text-bronze italic">{t.sobre_title2}</span></h2><div className="mt-8 space-y-4 text-[15px] opacity-75"><p>{t.sobre_p1}</p><p>{t.sobre_p2}</p><p>{t.sobre_p3}</p><p>{t.sobre_p4}</p></div><div className="mt-10 flex gap-4"><div className="w-12 h-[1px] bg-[#C08A5C] mt-3"></div><div><p className="font-semibold">{t.ceo_name}</p><p className="text-[11px] opacity-60">{t.ceo_role}</p></div></div></div><div className="relative"><div className="rounded-[24px] overflow-hidden bg-[#111] border border-white/10 aspect-[4/5]"><img src={photo3} alt="CEO" className="w-full h-full object-cover object-top" /></div><div className="absolute -bottom-6 -left-6 bg-[#0E0E0E] border border-white/10 rounded-[16px] p-5"><p className="serif text-[28px]">{t.years}</p><p className="text-[10px] opacity-60">{t.years_sub}</p></div></div></div></div></section>
 
-      <section id="servicios" className="bg-[#090909] py-20 border-t border-white/[0.06]">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-          <p className="text-[11px] tracking-[0.22em] text-bronze">{t.servicios_label}</p>
-          <div className="mt-8 grid md:grid-cols-3 gap-4">
-            {t.servicios.map((s,i)=>(
-              <div key={i} className="rounded-[20px] bg-[#111] border border-white/10 p-7 md:p-8 hover:border-[#C08A5C]/30 transition">
-                <p className="text-[11px] tracking-[0.22em] text-bronze">{s.cat}</p>
-                <h3 className="serif text-[28px] mt-3 leading-[0.9]">{s.title}</h3>
-                <p className="mt-4 text-[13px] leading-[1.7] opacity-70">{s.desc}</p>
-                <div className="mt-6 h-[1px] bg-[#C08A5C]/30 w-full" />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section id="servicios" className="bg-[#090909] py-20 border-t border-white/[0.06]"><div className="max-w-[1280px] mx-auto px-6 md:px-10"><p className="text-[11px] text-bronze">{t.servicios_label}</p><div className="mt-8 grid md:grid-cols-3 gap-4">{t.servicios.map((s,i)=><div key={i} className="rounded-[20px] bg-[#111] border border-white/10 p-7"><p className="text-[11px] text-bronze">{s.cat}</p><h3 className="serif text-[28px] mt-3">{s.title}</h3><p className="mt-4 text-[13px] opacity-70">{s.desc}</p></div>)}</div></div></section>
 
-      <section id="resenas" className="bg-[#070707] py-20 border-t border-white/[0.06]">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-          <p className="text-[11px] tracking-[0.22em] text-bronze">{t.resenas_label}</p>
-          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {t.resenas.map((r,i)=>(
-              <div key={i} className="rounded-[20px] bg-[#111] border border-white/10 p-6">
-                <div className="flex text-[#C08A5C] text-[14px]">★★★★★</div>
-                <p className="mt-4 text-[14px] leading-[1.7] opacity-80">"{r.text}"</p>
-                <p className="mt-5 font-semibold text-[13px]">{r.name}</p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+      <section id="resenas" className="bg-[#070707] py-20 border-t border-white/[0.06]"><div className="max-w-[1280px] mx-auto px-6 md:px-10"><p className="text-[11px] text-bronze">{t.resenas_label}</p><div className="mt-8 grid md:grid-cols-3 gap-4">{t.resenas.map((r,i)=><div key={i} className="rounded-[20px] bg-[#111] border border-white/10 p-6"><div className="text-[#C08A5C]">★★★★★</div><p className="mt-4 text-[14px] opacity-80">"{r.text}"</p><p className="mt-5 font-semibold text-[13px]">{r.name}</p></div>)}</div></div></section>
 
-      <section id="cotizacion" className="bg-[#090909] py-20 border-t border-white/[0.06]">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10 grid md:grid-cols-[0.9fr_1.1fr] gap-12">
-          <div>
-            <p className="text-[11px] tracking-[0.22em] text-bronze">{t.cotiza_label}</p>
-            <h2 className="serif text-[42px] md:text-[54px] leading-[0.95] mt-3">{t.cotiza_title1} <br/><span className="text-bronze italic">{t.cotiza_title2}</span></h2>
-            <p className="mt-4 text-[14px] opacity-70">{t.cotiza_desc}</p>
-            {formData.categoria && (
-              <div className="mt-6 p-4 rounded-[12px] bg-[#C08A5C]/10 border border-[#C08A5C]/30">
-                <p className="text-[11px] tracking-widest text-bronze">{t.cat_selected}</p>
-                <p className="mt-1 text-[14px] font-semibold text-white">{formData.categoria}</p>
-              </div>
-            )}
-          </div>
-          <form onSubmit={(e)=>{
-            e.preventDefault();
-            const msg = `Hola Kender! Soy ${formData.nombre}. %0ACategoría: ${formData.categoria || formData.tipo}%0ATipo: ${formData.tipo}%0AFecha: ${formData.fecha}%0ATel: ${formData.tel}%0AIdea: ${formData.msg}`;
-            window.open(`https://wa.me/18492535700?text=${msg}`, "_blank");
-          }} className="rounded-[20px] bg-[#111] border border-white/10 p-6 md:p-8 space-y-4">
-            <input value={formData.categoria} onChange={e=>setFormData({...formData,categoria:e.target.value})} placeholder={t.form_selected_ph} className="w-full bg-[#0E0E0E] border border-[#C08A5C]/30 rounded-[12px] px-4 py-3 text-[13px] outline-none text-[#C08A5C]" readOnly />
-            <div className="grid md:grid-cols-2 gap-4">
-              <input required value={formData.nombre} onChange={e=>setFormData({...formData,nombre:e.target.value})} placeholder={t.form_nombre} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px] outline-none" />
-              <input required value={formData.tel} onChange={e=>setFormData({...formData,tel:e.target.value})} placeholder={t.form_whatsapp} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px] outline-none" />
-            </div>
-            <select required value={formData.tipo} onChange={e=>setFormData({...formData,tipo:e.target.value})} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px]">
-              <option value="">{t.form_tipo}</option>
-              {fotoCats.map(c=><option key={c}>{c}</option>)}
-              {videoCats.map(c=><option key={c}>VIDEO - {c}</option>)}
-            </select>
-            <input value={formData.fecha} onChange={e=>setFormData({...formData,fecha:e.target.value})} type="date" className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px]" />
-            <textarea required value={formData.msg} onChange={e=>setFormData({...formData,msg:e.target.value})} placeholder={t.form_idea} rows={4} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px] resize-none" />
-            <button type="submit" className="w-full bronze-gradient text-black font-semibold tracking-[0.12em] uppercase text-[12px] py-3.5 rounded-[12px]">{t.form_submit} {formData.categoria || t.form_submit2}</button>
-          </form>
-        </div>
-      </section>
+      <section id="cotizacion" className="bg-[#090909] py-20 border-t border-white/[0.06]"><div className="max-w-[1280px] mx-auto px-6 md:px-10 grid md:grid-cols-[0.9fr_1.1fr] gap-12"><div><p className="text-[11px] text-bronze">{t.cotiza_label}</p><h2 className="serif text-[42px] md:text-[54px] mt-3">{t.cotiza_title1} <br/><span className="text-bronze italic">{t.cotiza_title2}</span></h2><p className="mt-4 text-[14px] opacity-70">{t.cotiza_desc}</p>{formData.categoria && <div className="mt-6 p-4 rounded-[12px] bg-[#C08A5C]/10 border border-[#C08A5C]/30"><p className="text-[11px] text-bronze">{t.cat_selected}</p><p className="mt-1 font-semibold">{formData.categoria}</p></div>}</div><form onSubmit={(e)=>{e.preventDefault(); const msg = `Hola Kender! Soy ${formData.nombre}. Categoria: ${formData.categoria} Tel: ${formData.tel} Idea: ${formData.msg}`; window.open(`https://wa.me/18492535700?text=${encodeURIComponent(msg)}`, "_blank");}} className="rounded-[20px] bg-[#111] border border-white/10 p-6 space-y-4"><input value={formData.categoria} readOnly placeholder={t.form_selected_ph} className="w-full bg-[#0E0E0E] border border-[#C08A5C]/30 rounded-[12px] px-4 py-3 text-[13px] text-[#C08A5C]" /><div className="grid md:grid-cols-2 gap-4"><input required value={formData.nombre} onChange={e=>setFormData({...formData,nombre:e.target.value})} placeholder={t.form_nombre} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px]" /><input required value={formData.tel} onChange={e=>setFormData({...formData,tel:e.target.value})} placeholder={t.form_whatsapp} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px]" /></div><select required value={formData.tipo} onChange={e=>setFormData({...formData,tipo:e.target.value})} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px]"><option value="">{t.form_tipo}</option>{fotoCats.map(c=><option key={c}>{c}</option>)}{videoCats.map(c=><option key={c}>VIDEO - {c}</option>)}</select><textarea required value={formData.msg} onChange={e=>setFormData({...formData,msg:e.target.value})} placeholder={t.form_idea} rows={4} className="w-full bg-[#0E0E0E] border border-white/10 rounded-[12px] px-4 py-3 text-[14px]" /><button type="submit" className="w-full bronze-gradient text-black font-semibold uppercase text-[12px] py-3.5 rounded-[12px]">{t.form_submit} • WhatsApp</button></form></div></section>
 
-      <footer className="bg-[#050505] border-t border-white/[0.06] py-14">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
-          <div className="grid md:grid-cols-[1.2fr_1fr_1fr] gap-10">
-            <div>
-              <div className="flex items-center gap-3">
-                <img src={logo} alt="Kender" className="w-12 h-12 object-cover rounded-[8px]" />
-                <div className="leading-[1.1]"><p className="font-semibold tracking-[0.12em] text-[13px]">KENDER</p><p className="text-[11px] tracking-[0.2em] opacity-70">MEDIA GROUP</p></div>
-              </div>
-              <p className="mt-4 text-[13px] leading-[1.7] opacity-60 max-w-[340px]">{t.footer_desc}</p>
-              <p className="mt-6 text-[11px] tracking-widest opacity-40">© 2026 Kender Media Group • V5 FINAL + EN + BODAS + AUTOPLAY</p>
-            </div>
-            <div>
-              <p className="text-[11px] tracking-[0.22em] text-bronze">{t.contacto}</p>
-              <div className="mt-4 space-y-2 text-[13px] opacity-70">
-                <p>Santo Domingo Este, República Dominicana</p>
-                <p>kendermediagroup@gmail.com</p>
-                <p>849-253-5700</p>
-                <p>@kendermediagroup</p>
-              </div>
-            </div>
-            <div>
-              <p className="text-[11px] tracking-[0.22em] text-bronze">{t.accesos}</p>
-              <div className="mt-4 space-y-2 text-[13px] opacity-70">
-                <a href="#portafolio" className="block hover:text-white">{t.nav_portafolio}</a>
-                <a href="#servicios" className="block hover:text-white">{t.nav_servicios}</a>
-                <a href="#sobre" className="block hover:text-white">{t.nav_sobre}</a>
-                <a href="#resenas" className="block hover:text-white">{t.nav_resenas}</a>
-                <a href="https://wa.me/18492535700" target="_blank" className="inline-block mt-4 px-5 py-2.5 rounded-full bg-white text-black text-[11px] font-bold tracking-widest">{t.whatsapp_directo}</a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </footer>
+      <footer className="bg-[#050505] border-t border-white/[0.06] py-14"><div className="max-w-[1280px] mx-auto px-6 md:px-10 grid md:grid-cols-[1.2fr_1fr_1fr] gap-10"><div><div className="flex gap-3"><img src={logo} alt="logo" className="w-12 h-12 rounded-[8px] object-cover" /><div><p className="font-semibold text-[13px]">KENDER</p><p className="text-[11px] opacity-70">MEDIA GROUP</p></div></div><p className="mt-4 text-[13px] opacity-60 max-w-[340px]">{t.footer_desc}</p></div><div><p className="text-[11px] text-bronze">{t.contacto}</p><div className="mt-4 text-[13px] opacity-70 space-y-1"><p>Santo Domingo Este, RD</p><p>kendermediagroup@gmail.com</p><p>849-253-5700</p></div></div><div><p className="text-[11px] text-bronze">{t.accesos}</p><div className="mt-4 text-[13px] opacity-70"><a href="#portafolio" className="block">Portfolio</a><a href="#sobre" className="block">About</a><a href="https://wa.me/18492535700" className="inline-block mt-4 px-5 py-2.5 rounded-full bg-white text-black text-[11px] font-bold">{t.whatsapp_directo}</a></div></div></div></footer>
 
-      {lightbox && (
-        <div className="fixed inset-0 z-[80] bg-black/90 backdrop-blur flex items-center justify-center p-6" onClick={()=>setLightbox(null)}>
-          <img src={lightbox} alt="lightbox" className="max-w-[92vw] max-h-[86vh] object-contain rounded-[12px]" />
-          <button className="absolute top-6 right-6 w-10 h-10 rounded-full bg-white/10 border border-white/20">✕</button>
-        </div>
-      )}
+      {lightbox && <div className="fixed inset-0 z-[80] bg-black/90 flex items-center justify-center p-6" onClick={()=>setLightbox(null)}><img src={lightbox} alt="lightbox" className="max-w-[92vw] max-h-[86vh] object-contain rounded-[12px]" /></div>}
     </div>
   );
 }
