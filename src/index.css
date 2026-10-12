@@ -1,1 +1,8 @@
-@tailwind base;@tailwind components;@tailwind utilities;body{background:#070707;color:white;}
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+body { background:#070707; color:white; font-family: Inter, system-ui, sans-serif; }
+.bronze-gradient { background: linear-gradient(135deg,#C08A5C,#8C5A32); }
+.text-bronze { color:#C08A5C; }
+.serif { font-family: ui-serif, Georgia, serif; }

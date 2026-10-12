@@ -67,6 +67,23 @@ const heroSlides = [
   { type: "photo", src: estudio3, cat: "ESTUDIO" },
 ];
 
+const servicios = [
+  { cat: "CONSTRUCTORAS", title: "CONSTRUCTORAS", desc: "Documentación de avances, renders vividos y contenido para ventas. Convertimos obra gris en deseo de compra." },
+  { cat: "CUMPLEAÑOS", title: "CUMPLEAÑOS", desc: "Celebraciones íntimas y grandes fiestas. Captura emotiva, entrega rápida, misma noche highlights." },
+  { cat: "QUINCEAÑOS", title: "QUINCEAÑOS", desc: "Sesión soñada, vestido, vals y emoción familiar. Fotos editoriales y film cinematográfico." },
+  { cat: "CORPORATIVOS", title: "CORPORATIVOS", desc: "Cobertura completa de eventos empresariales, congresos y activaciones de marca con entrega en 24h." },
+  { cat: "MARCAS", title: "MARCAS", desc: "Contenido de alto impacto para redes, campañas y e-commerce. Historias que venden." },
+  { cat: "GUBERNAMENTALES", title: "GUBERNAMENTALES", desc: "Cobertura oficial de actos, protocolo y comunicación institucional con calidad broadcast." },
+];
+
+const resenas = [
+  { name: "Raul", text: "Profesionales de verdad. El video de mi empresa superó lo que imaginaba. Ventas aumentaron después del reel." },
+  { name: "Railing", text: "Mi quinceaños fue mágico y ellos lo hicieron eterno. Las fotos parecen de revista." },
+  { name: "Jesus", text: "Puntualidad, creatividad y calidad. Kender es otro nivel en RD." },
+  { name: "Roberto", text: "Contratamos para constructoras y ahora son nuestro equipo oficial de contenido." },
+  { name: "Laura", text: "La sesión de estudio superó mis expectativas. Atención al detalle increíble." },
+];
+
 export default function App() {
   const [current, setCurrent] = useState(0);
   const [muted, setMuted] = useState(true);
@@ -75,6 +92,7 @@ export default function App() {
   const [activeFotoCat, setActiveFotoCat] = useState<string>("Retratos de Estudio");
   const [activeVideoCat, setActiveVideoCat] = useState<string>("Eventos Corporativos");
   const [formData, setFormData] = useState({ nombre: "", tel: "", tipo: "", fecha: "", msg: "", categoria: "" });
+  const [lang, setLang] = useState<"ES"|"EN">("ES");
   const iframeRefs = useRef<(HTMLIFrameElement | null)[]>([]);
 
   useEffect(() => {
@@ -104,32 +122,29 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-[#070707] text-white">
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
-        *{font-family:'Inter',sans-serif}
-        .serif{font-family:'Instrument Serif',serif}
-        html{scroll-behavior:smooth; scroll-padding-top:96px;}
-        .bronze-gradient{background: linear-gradient(90deg,#C08A5C,#B7794B);}
-        .text-bronze{color:#C08A5C;}
-        .hero-media{position:absolute; inset:0; width:100%; height:100%; overflow:hidden; background:#070707;}
-        .hero-media iframe{position:absolute; left:50%; top:50%; width:100vw; height:56.25vw; min-height:100%; min-width:177.77vh; transform:translate(-50%,-50%) scale(1.15); border:0;}
-        .hero-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;}
-        @media (max-width:767px){ .hero-media img{object-position:center top;} }
-        @media (min-width:768px){ .hero-media img{object-position:center 18%; transform:scale(0.92); transform-origin:center top; width:100%; height:108%;} }
-      `}</style>
+      <style>{`@import url('https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');*{font-family:'Inter',sans-serif}.serif{font-family:'Instrument Serif',serif}html{scroll-behavior:smooth; scroll-padding-top:96px;}.bronze-gradient{background: linear-gradient(90deg,#C08A5C,#B7794B);}.text-bronze{color:#C08A5C;}.hero-media{position:absolute; inset:0; width:100%; height:100%; overflow:hidden; background:#070707;}.hero-media iframe{position:absolute; left:50%; top:50%; width:100vw; height:56.25vw; min-height:100%; min-width:177.77vh; transform:translate(-50%,-50%) scale(1.15); border:0;}.hero-media img{position:absolute; inset:0; width:100%; height:100%; object-fit:cover; object-position:center top;}@media (max-width:767px){ .hero-media img{object-position:center top;} }@media (min-width:768px){ .hero-media img{object-position:center 18%; transform:scale(0.92); transform-origin:center top; width:100%; height:108%;} }`}</style>
 
-      <header className="fixed top-0 left-0 w-full z-50 bg-[#070707]/80 backdrop-blur-xl border-b border-white/[0.06]">
+      <header className="fixed top-0 left-0 w-full z-50 bg-[#070707]/90 backdrop-blur-xl border-b border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto px-6 md:px-10 h-[88px] flex items-center justify-between">
           <div className="flex items-center gap-3">
             <img src={logo} alt="Kender" className="w-12 h-12 object-cover rounded-[8px]" />
             <div className="leading-[1.1]"><p className="font-semibold tracking-[0.12em] text-[12px]">KENDER</p><p className="text-[10px] tracking-[0.2em] opacity-70">MEDIA GROUP</p></div>
           </div>
-          <nav className="hidden md:flex gap-6 text-[11px] tracking-widest opacity-70">
-            <a href="#inicio" className="hover:text-white">INICIO</a>
-            <a href="#portafolio" className="hover:text-white">PORTAFOLIO</a>
-            <a href="#cotizacion" className="hover:text-white">COTIZAR</a>
-          </nav>
-          <a href="#cotizacion" className="bronze-gradient text-black text-[11px] tracking-widest px-5 py-2.5 rounded-full font-semibold">COTIZAR</a>
+          <div className="flex items-center gap-4">
+            <nav className="hidden lg:flex gap-6 text-[11px] tracking-widest opacity-70">
+              <a href="#inicio">INICIO</a>
+              <a href="#portafolio">PORTAFOLIO</a>
+              <a href="#sobre">SOBRE NOSOTROS</a>
+              <a href="#servicios">SERVICIOS</a>
+              <a href="#resenas">RESEÑAS</a>
+              <a href="#cotizacion">COTIZAR</a>
+            </nav>
+            <div className="flex p-1 rounded-full bg-white/[0.08] border border-white/10">
+              <button onClick={()=>setLang("ES")} className={`px-3 py-1 rounded-full text-[11px] font-bold ${lang==="ES"?"bg-white text-black":"opacity-60"}`}>ES</button>
+              <button onClick={()=>setLang("EN")} className={`px-3 py-1 rounded-full text-[11px] font-bold ${lang==="EN"?"bg-white text-black":"opacity-60"}`}>EN</button>
+            </div>
+            <a href="#cotizacion" className="bronze-gradient text-black text-[11px] tracking-widest px-5 py-2.5 rounded-full font-semibold">COTIZAR</a>
+          </div>
         </div>
       </header>
 
@@ -169,11 +184,11 @@ export default function App() {
             <div>
               <p className="text-[11px] tracking-[0.22em] text-bronze">PORTAFOLIO POR CATEGORÍAS</p>
               <h2 className="serif text-[36px] md:text-[54px] leading-[0.95] mt-3">Explora por <span className="text-bronze italic">categoría</span></h2>
-              <p className="mt-3 text-[13px] opacity-60 max-w-[520px]">Fotografía solo en Retratos Estudio y Exterior. Videos con links visibles y sin fotos.</p>
+              <p className="mt-3 text-[13px] opacity-60 max-w-[520px]">Fotografía solo en Retratos Estudio y Exterior. Videos solo video con links visibles.</p>
             </div>
             <div className="flex gap-2 p-1 rounded-full bg-white/[0.06] border border-white/10">
-              <button onClick={()=>setMainTab("foto")} className={`px-7 py-2.5 rounded-full text-[12px] tracking-widest font-semibold transition ${mainTab==="foto"?"bg-white text-black":"opacity-60"}`}>FOTOGRAFÍA</button>
-              <button onClick={()=>setMainTab("video")} className={`px-7 py-2.5 rounded-full text-[12px] tracking-widest font-semibold transition ${mainTab==="video"?"bg-white text-black":"opacity-60"}`}>VIDEO</button>
+              <button onClick={()=>setMainTab("foto")} className={`px-7 py-2.5 rounded-full text-[12px] tracking-widest font-semibold ${mainTab==="foto"?"bg-white text-black":"opacity-60"}`}>FOTOGRAFÍA</button>
+              <button onClick={()=>setMainTab("video")} className={`px-7 py-2.5 rounded-full text-[12px] tracking-widest font-semibold ${mainTab==="video"?"bg-white text-black":"opacity-60"}`}>VIDEO</button>
             </div>
           </div>
 
@@ -181,40 +196,30 @@ export default function App() {
             <>
               <div className="mt-8 flex flex-wrap gap-2">
                 {FOTO_CATS.map(cat=>{
-                  const isActive = activeFotoCat===cat;
                   const count = portfolioFoto[cat]?.length || 0;
-                  return (
-                    <button key={cat} onClick={()=>setActiveFotoCat(cat)} className={`px-4 py-2 rounded-full text-[11px] tracking-wide border transition ${isActive?"bg-[#C08A5C] border-[#C08A5C] text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70 hover:opacity-100"}`}>
-                      {cat} {count>0?`(${count})`:""}
-                    </button>
-                  );
+                  return <button key={cat} onClick={()=>setActiveFotoCat(cat)} className={`px-4 py-2 rounded-full text-[11px] border ${activeFotoCat===cat?"bg-[#C08A5C] border-[#C08A5C] text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>{cat} {count>0?`(${count})`:""}</button>
                 })}
               </div>
-
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4 p-4 rounded-[14px] bg-white/[0.04] border border-white/10">
-                <div>
-                  <p className="font-semibold text-[13px] tracking-wide">{activeFotoCat}</p>
-                  <p className="text-[11px] opacity-60">{portfolioFoto[activeFotoCat]?.length||0} fotos</p>
-                </div>
-                <button onClick={()=>cotizarCategoria(activeFotoCat, "foto")} className="px-6 py-2.5 rounded-full bronze-gradient text-black text-[11px] font-bold tracking-widest uppercase">Cotizar {activeFotoCat} • WhatsApp</button>
+                <div><p className="font-semibold text-[13px]">{activeFotoCat}</p><p className="text-[11px] opacity-60">{portfolioFoto[activeFotoCat]?.length||0} fotos</p></div>
+                <button onClick={()=>cotizarCategoria(activeFotoCat,"foto")} className="px-6 py-2.5 rounded-full bronze-gradient text-black text-[11px] font-bold uppercase">Cotizar {activeFotoCat} • WhatsApp</button>
               </div>
-
               {(portfolioFoto[activeFotoCat]?.length||0)>0 ? (
-                <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-3 md:gap-4">
-                  {(portfolioFoto[activeFotoCat] || []).map((src, i)=>(
+                <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-3">
+                  {(portfolioFoto[activeFotoCat]||[]).map((src,i)=>(
                     <div key={i} className="group relative aspect-[4/5] overflow-hidden rounded-[16px] bg-[#111] border border-white/5 cursor-pointer" onClick={()=>setLightbox(src)}>
                       <img src={src} alt={`${activeFotoCat} ${i+1}`} className="w-full h-full object-cover object-top group-hover:scale-[1.04] transition duration-700" />
                       <div className="absolute bottom-0 left-0 right-0 p-3 flex justify-between items-end opacity-0 group-hover:opacity-100 transition bg-gradient-to-t from-black/60 to-transparent">
-                        <p className="text-[10px] tracking-widest opacity-80">{activeFotoCat.toUpperCase()} • {i+1}</p>
-                        <button onClick={(e)=>{e.stopPropagation(); cotizarCategoria(activeFotoCat, "foto")}} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">COTIZAR</button>
+                        <p className="text-[10px]">{activeFotoCat} • {i+1}</p>
+                        <button onClick={(e)=>{e.stopPropagation(); cotizarCategoria(activeFotoCat,"foto")}} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">COTIZAR</button>
                       </div>
                     </div>
                   ))}
                 </div>
               ) : (
                 <div className="mt-8 rounded-[16px] border border-dashed border-white/15 p-12 text-center">
-                  <p className="text-[13px] opacity-60">Fotos de {activeFotoCat} próximamente. Esperando que me pases las fotografías para ponerlas en orden.</p>
-                  <button onClick={()=>cotizarCategoria(activeFotoCat, "foto")} className="mt-4 px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">Cotizar {activeFotoCat}</button>
+                  <p className="text-[13px] opacity-60">Fotos de {activeFotoCat} próximamente. Esperando que me pases las fotografías.</p>
+                  <button onClick={()=>cotizarCategoria(activeFotoCat,"foto")} className="mt-4 px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">Cotizar {activeFotoCat}</button>
                 </div>
               )}
             </>
@@ -224,35 +229,25 @@ export default function App() {
             <>
               <div className="mt-8 flex flex-wrap gap-2">
                 {VIDEO_CATS.map(cat=>{
-                  const isActive = activeVideoCat===cat;
-                  const count = portfolioVideo[cat]?.length || 0;
-                  return (
-                    <button key={cat} onClick={()=>setActiveVideoCat(cat)} className={`px-4 py-2 rounded-full text-[11px] tracking-wide border transition ${isActive?"bg-white border-white text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>
-                      {cat} ({count})
-                    </button>
-                  );
+                  const count = portfolioVideo[cat]?.length||0;
+                  return <button key={cat} onClick={()=>setActiveVideoCat(cat)} className={`px-4 py-2 rounded-full text-[11px] border ${activeVideoCat===cat?"bg-white text-black font-semibold":"bg-white/[0.04] border-white/10 opacity-70"}`}>{cat} ({count})</button>
                 })}
               </div>
-
               <div className="mt-8 flex flex-wrap items-center justify-between gap-4 p-4 rounded-[14px] bg-white/[0.04] border border-white/10">
-                <div>
-                  <p className="font-semibold text-[13px] tracking-wide">{activeVideoCat}</p>
-                  <p className="text-[11px] opacity-60">VIDEO • {portfolioVideo[activeVideoCat]?.length||0} videos • Solo video, sin fotos • Links visibles</p>
-                </div>
-                <button onClick={()=>cotizarCategoria(activeVideoCat, "video")} className="px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold tracking-widest uppercase">Cotizar {activeVideoCat} • WhatsApp</button>
+                <div><p className="font-semibold text-[13px]">{activeVideoCat}</p><p className="text-[11px] opacity-60">VIDEO • {portfolioVideo[activeVideoCat]?.length} videos • Solo video • Links visibles</p></div>
+                <button onClick={()=>cotizarCategoria(activeVideoCat,"video")} className="px-6 py-2.5 rounded-full bg-white text-black text-[11px] font-bold uppercase">Cotizar {activeVideoCat}</button>
               </div>
-
               <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-4">
-                {(portfolioVideo[activeVideoCat] || []).map((v, i)=>(
-                  <div key={i} className="group relative rounded-[16px] overflow-hidden bg-[#111] border border-white/10">
-                    <div className="relative aspect-video overflow-hidden bg-black">
+                {(portfolioVideo[activeVideoCat]||[]).map((v,i)=>(
+                  <div key={i} className="rounded-[16px] overflow-hidden bg-[#111] border border-white/10">
+                    <div className="relative aspect-video bg-black">
                       <iframe src={v.url} className="w-full h-full" allow="autoplay; fullscreen" title={v.title} />
                     </div>
                     <div className="p-3 bg-[#0E0E0E] flex flex-col gap-2">
-                      <a href={v.link} target="_blank" rel="noopener" className="text-[11px] text-[#C08A5C] hover:text-white underline break-all">{v.link}</a>
+                      <a href={v.link} target="_blank" className="text-[11px] text-[#C08A5C] underline break-all">{v.link}</a>
                       <div className="flex justify-between items-center">
                         <p className="text-[10px] opacity-60">{v.title}</p>
-                        <button onClick={()=>cotizarCategoria(activeVideoCat,"video")} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold tracking-widest">COTIZAR ESTA CATEGORÍA</button>
+                        <button onClick={()=>cotizarCategoria(activeVideoCat,"video")} className="px-3 py-1 rounded-full bg-white text-black text-[9px] font-bold">COTIZAR ESTA CATEGORÍA</button>
                       </div>
                     </div>
                   </div>
@@ -263,7 +258,72 @@ export default function App() {
         </div>
       </section>
 
-      <section id="cotizacion" className="bg-[#070707] py-20 border-t border-white/[0.06]">
+      <section id="sobre" className="bg-[#070707] py-20 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+          <p className="text-[11px] tracking-[0.22em] text-bronze">SOBRE NOSOTROS</p>
+          <div className="mt-6 grid md:grid-cols-[1.1fr_0.9fr] gap-10 items-start">
+            <div>
+              <h2 className="serif text-[38px] md:text-[52px] leading-[0.95]">Más que una productora,<br/>somos <span className="text-bronze italic">narradores de emociones.</span></h2>
+              <div className="mt-8 space-y-4 text-[15px] leading-[1.8] opacity-75 font-light">
+                <p>Soy Andy Batista Sanon, C.E.O. y fundador de Kender Media Group.</p>
+                <p>Creo que una fotografía no es simplemente una imagen, y un video no es simplemente una grabación. Son momentos que se convierten en recuerdos, emociones que vuelven a sentirse y experiencias que permanecen.</p>
+                <p>En Kender Media Group no nos dedicamos únicamente a capturar lo que sucede frente a nuestro lente; contamos historias, creamos emociones y transformamos momentos en recuerdos que podrás revivir una y otra vez.</p>
+                <p>Porque los momentos pasan... pero la emoción de volver a vivirlos no tiene por qué hacerlo.</p>
+              </div>
+              <div className="mt-10 flex items-center gap-4">
+                <div className="w-12 h-[1px] bg-[#C08A5C]"></div>
+                <div>
+                  <p className="font-semibold text-[16px]">Andy Batista Sanon</p>
+                  <p className="text-[11px] tracking-[0.2em] opacity-60">CEO & FOUNDER • KENDER MEDIA GROUP</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="relative rounded-[24px] overflow-hidden bg-[#111] border border-white/10 aspect-[4/5]">
+                <img src={photo3} alt="Andy Batista Sanon CEO" className="w-full h-full object-cover object-top" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+              </div>
+              <div className="absolute -bottom-6 -left-6 md:bottom-6 md:-left-10 bg-[#0E0E0E] border border-white/10 rounded-[16px] p-5 md:p-6 shadow-2xl">
+                <p className="serif text-[28px] leading-none">+9 años</p>
+                <p className="mt-1 text-[10px] tracking-[0.22em] opacity-60">CREANDO RECUERDOS</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="servicios" className="bg-[#090909] py-20 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+          <p className="text-[11px] tracking-[0.22em] text-bronze">SERVICIOS</p>
+          <div className="mt-8 grid md:grid-cols-3 gap-4">
+            {servicios.map((s,i)=>(
+              <div key={i} className="rounded-[20px] bg-[#111] border border-white/10 p-7 md:p-8 hover:border-[#C08A5C]/30 transition">
+                <p className="text-[11px] tracking-[0.22em] text-bronze">{s.cat}</p>
+                <h3 className="serif text-[28px] mt-3 leading-[0.9]">{s.title}</h3>
+                <p className="mt-4 text-[13px] leading-[1.7] opacity-70">{s.desc}</p>
+                <div className="mt-6 h-[1px] bg-[#C08A5C]/30 w-full" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="resenas" className="bg-[#070707] py-20 border-t border-white/[0.06]">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+          <p className="text-[11px] tracking-[0.22em] text-bronze">LO QUE DICEN NUESTROS CLIENTES</p>
+          <div className="mt-8 grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {resenas.map((r,i)=>(
+              <div key={i} className="rounded-[20px] bg-[#111] border border-white/10 p-6">
+                <div className="flex text-[#C08A5C] text-[14px]">★★★★★</div>
+                <p className="mt-4 text-[14px] leading-[1.7] opacity-80">"{r.text}"</p>
+                <p className="mt-5 font-semibold text-[13px]">{r.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section id="cotizacion" className="bg-[#090909] py-20 border-t border-white/[0.06]">
         <div className="max-w-[1280px] mx-auto px-6 md:px-10 grid md:grid-cols-[0.9fr_1.1fr] gap-12">
           <div>
             <p className="text-[11px] tracking-[0.22em] text-bronze">COTIZACIÓN POR CATEGORÍA</p>
@@ -298,10 +358,37 @@ export default function App() {
         </div>
       </section>
 
-      <footer className="bg-[#050505] border-t border-white/[0.06] py-12">
-        <div className="max-w-[1280px] mx-auto px-6 md:px-10 flex flex-wrap justify-between gap-6">
-          <div className="flex gap-3 items-center"><img src={logo} alt="logo" className="w-10 h-10 rounded object-cover" /><p className="text-[11px] tracking-widest">KENDER MEDIA GROUP • V5 + CATEGORIAS</p></div>
-          <p className="text-[11px] opacity-40">© {new Date().getFullYear()} • 849-253-5700</p>
+      <footer className="bg-[#050505] border-t border-white/[0.06] py-14">
+        <div className="max-w-[1280px] mx-auto px-6 md:px-10">
+          <div className="grid md:grid-cols-[1.2fr_1fr_1fr] gap-10">
+            <div>
+              <div className="flex items-center gap-3">
+                <img src={logo} alt="Kender" className="w-12 h-12 object-cover rounded-[8px]" />
+                <div className="leading-[1.1]"><p className="font-semibold tracking-[0.12em] text-[13px]">KENDER</p><p className="text-[11px] tracking-[0.2em] opacity-70">MEDIA GROUP</p></div>
+              </div>
+              <p className="mt-4 text-[13px] leading-[1.7] opacity-60 max-w-[340px]">Fotografía y video de alto impacto. Santo Domingo Este, RD. Historias que venden y emociones que permanecen.</p>
+              <p className="mt-6 text-[11px] tracking-widest opacity-40">© 2026 Kender Media Group • V5 FIX</p>
+            </div>
+            <div>
+              <p className="text-[11px] tracking-[0.22em] text-bronze">CONTACTO</p>
+              <div className="mt-4 space-y-2 text-[13px] opacity-70">
+                <p>Santo Domingo Este, República Dominicana</p>
+                <p>kendermediagroup@gmail.com</p>
+                <p>849-253-5700</p>
+                <p>@kendermediagroup</p>
+              </div>
+            </div>
+            <div>
+              <p className="text-[11px] tracking-[0.22em] text-bronze">ACCESOS RÁPIDOS</p>
+              <div className="mt-4 space-y-2 text-[13px] opacity-70">
+                <a href="#portafolio" className="block hover:text-white">Portafolio</a>
+                <a href="#servicios" className="block hover:text-white">Servicios</a>
+                <a href="#sobre" className="block hover:text-white">Sobre Nosotros</a>
+                <a href="#resenas" className="block hover:text-white">Reseñas</a>
+                <a href="https://wa.me/18492535700" target="_blank" className="inline-block mt-4 px-5 py-2.5 rounded-full bg-white text-black text-[11px] font-bold tracking-widest">WhatsApp directo</a>
+              </div>
+            </div>
+          </div>
         </div>
       </footer>
 
